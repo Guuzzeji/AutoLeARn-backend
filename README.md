@@ -11,4 +11,6 @@ Treehacks-2025
 ```txt
 GROQ_API_KEY="your-groq-api-key"
 PERPLEXITY_API_KEY="your-perplexity-api-key"
+PORT=5000
+HOST=127.0.0.1
 ```
