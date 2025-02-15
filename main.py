@@ -11,8 +11,8 @@ CORS(app)
 app.register_blueprint(API_PATH)
 
 if __name__ == '__main__':
-    print(os.environ.get("PORT"), os.environ.get("HOST"))
-    print("Running Server -- " + "Host:" +
-          os.environ.get("HOST") + ":" + os.environ.get("PORT"),)
+    # print(os.environ.get("PORT"), os.environ.get("HOST"))
+    # print("Running Server -- " + "Host:" +
+    #       os.environ.get("HOST") + ":" + os.environ.get("PORT"),)
     app.run(host=os.environ.get("HOST"),
             port=os.environ.get("PORT"), debug=True)
