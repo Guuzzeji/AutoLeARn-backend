@@ -26,6 +26,7 @@ jsonpatch==1.33
 jsonpointer==3.0.0
 langchain==0.3.18
 langchain-core==0.3.35
+langchain-groq==0.2.4
 langchain-text-splitters==0.3.6
 langgraph==0.2.72
 langgraph-checkpoint==2.0.15
@@ -54,6 +55,7 @@ pyobjc-framework-Quartz==11.0
 pyperclip==1.9.0
 PyRect==0.2.0
 PyScreeze==1.0.1
+python-dotenv==1.0.1
 pytweening==1.2.0
 PyYAML==6.0.2
 requests==2.32.3
