@@ -15,6 +15,10 @@ CarInfo = {
             "type": "integer",
             "description": "Car year use \"-1\" if unknown or nothing was given.",
         },
+        "issue_with_car": {
+            "type": "string",
+            "description": "Issue with car use \"unknown\" if not known or nothing was given.",
+        }
     },
     "required": ["make", "model", "year"],
 }
