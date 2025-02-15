@@ -43,7 +43,7 @@ Output example:
 BASE_URL = "https://api.perplexity.ai/chat/completions"
 
 PAYLOAD_TEMPLATE = {
-    "model": "sonar",
+    "model": "sonar-reasoning",
     "messages": [
         {
             "role": "system",

@@ -135,6 +135,8 @@ def handle_agent():
         response = AGENT_MODEL.invoke({"messages": [HumanMessage(content=input_prompt)]}, {"configurable": {"thread_id": 42}})
         ai_msg = response["messages"][-1].content
 
+        print(ai_msg)
+
         struct_converter = STRUCTS_CONVERTER.get("StepsTutorial")
         steps_tutorial = struct_converter(ai_msg)
         if steps_tutorial == None:
