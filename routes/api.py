@@ -133,8 +133,14 @@ def handle_agent():
 
     try:
         response = AGENT_MODEL.invoke({"messages": [HumanMessage(content=input_prompt)]}, {"configurable": {"thread_id": 42}})
-        print(response["messages"][-1].content)
-        return jsonify({"content": response["messages"][-1].content}), 200
+        ai_msg = response["messages"][-1].content
+
+        struct_converter = STRUCTS_CONVERTER.get("StepsTutorial")
+        steps_tutorial = struct_converter(ai_msg)
+        if steps_tutorial == None:
+            return jsonify({"error": "Failed to convert text to struct"}), 500
+
+        return jsonify({"step_breakdown": steps_tutorial, "original_text": ai_msg}), 200
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 500

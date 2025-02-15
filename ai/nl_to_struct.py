@@ -7,10 +7,11 @@ load_dotenv()
 from langchain_groq import ChatGroq
 
 from .models.CarInfo import CarInfo
+from .models.StepsTutorial import StepsTutorial
 
 groq_llm = ChatGroq(
-    model_name="llama3-8b-8192",
-    temperature=0.0
+    model_name="llama-3.3-70b-versatile",
+    temperature=0.2
 )
 
 # NOTE (Gabe): if nl is "" it will default to 
@@ -20,8 +21,13 @@ def nl_to_CarInfo(nl: str) -> dict[str]:
     car_info_model =  groq_llm.with_structured_output(CarInfo)
     return car_info_model.invoke(nl)
 
+def nl_to_StepsTutorial(nl: str) -> dict[str]:
+    car_info_model =  groq_llm.with_structured_output(StepsTutorial)
+    return car_info_model.invoke(nl)
+
 STRUCTS_CONVERTER = {
-    "CarInfo": nl_to_CarInfo
+    "CarInfo": nl_to_CarInfo,
+    "StepsTutorial": nl_to_StepsTutorial
 }
 
 if __name__ == "__main__":
