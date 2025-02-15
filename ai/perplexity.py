@@ -43,7 +43,7 @@ Output example:
 BASE_URL = "https://api.perplexity.ai/chat/completions"
 
 PAYLOAD_TEMPLATE = {
-    "model": "sonar-reasoning-pro",
+    "model": "sonar",
     "messages": [
         {
             "role": "system",
@@ -63,11 +63,13 @@ PAYLOAD_TEMPLATE = {
             - Encourage safe practices and compliance with manufacturer guidelines.
             - If unsure, suggest consulting a certified mechanic.
 
+            Keep your response short and to the point.
+
             Maintain a helpful, professional, and adaptable tone—detailed for beginners, concise for experts.
             """
         },
     ],
-    # "max_tokens": 123,
+    "max_tokens": 3000,
     "temperature": 0.2,
     # "top_p": 0.9,
     # "search_domain_filter": None,
