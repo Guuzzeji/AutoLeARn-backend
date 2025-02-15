@@ -5,15 +5,15 @@ CarInfo = {
     "properties": {
         "make": {
             "type": "string",
-            "description": "Car make"
+            "description": "Car make use \"unknown\" if not known or nothing was given,",
         },
         "model": {
             "type": "string",
-            "description": "Car model"
+            "description": "Car model use \"unknown\" if not known or nothing was given.",
         },
         "year": {
             "type": "integer",
-            "description": "Car year"
+            "description": "Car year use \"-1\" if unknown or nothing was given.",
         },
     },
     "required": ["make", "model", "year"],

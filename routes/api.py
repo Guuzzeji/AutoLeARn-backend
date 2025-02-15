@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 
 from ai.whisper import whisper
 from xr.screen_capture import get_windows, window_screenshot
+from ai.nl_to_struct import STRUCTS_CONVERTER
 
 API_PATH = Blueprint("api", __name__, url_prefix="/api")
 
@@ -54,6 +55,37 @@ def handle_window_screenshot():
 
     return jsonify(screenshot_data), 200
 
+"""
+Request: 
+{
+    "text": "User text", (Required)
+    "type": "CarInfo" (Required)
+}
+"""
 
+@API_PATH.route("/lang_to_struct", methods=["POST"])
+def handle_lang_to_struct():
+    req_data = request.get_json()
+
+    if req_data.get("text") is None or req_data.get("type") is None:
+        return jsonify({"error": "Missing required fields"}), 400
+
+    text = req_data.get("text")
+    struct_type = req_data.get("type")
+
+    struct_converter = STRUCTS_CONVERTER.get(struct_type)
+    if struct_converter is None:
+        return jsonify({"error": "Invalid struct type"}), 400
+
+    struct = struct_converter(text)
+    if struct == None:
+        return jsonify({"error": "Failed to convert text to struct"}), 500
+
+    return jsonify(struct), 200
+
+
+@API_PATH.route("/agent", methods=["POST"])
+def handle_agent():
+    pass
 
 
