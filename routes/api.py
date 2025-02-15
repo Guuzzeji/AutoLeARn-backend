@@ -1,9 +1,12 @@
 import os
 from flask import Blueprint, request, jsonify
+from langchain_core.messages import HumanMessage
 
 from ai.whisper import whisper
 from xr.screen_capture import get_windows, window_screenshot
 from ai.nl_to_struct import STRUCTS_CONVERTER
+from ai.agent import AGENT_MODEL
+
 
 API_PATH = Blueprint("api", __name__, url_prefix="/api")
 
@@ -83,9 +86,58 @@ def handle_lang_to_struct():
 
     return jsonify(struct), 200
 
+"""
+{
+    "previous_text": "Previous text", (Required)
+    "text": "User text", (Required)
+    "image_path": "Path to image", (Optional)
+    "car_info": "CarInfo (Copy struct look in model)", (Rquired)
+}
+"""
 
 @API_PATH.route("/agent", methods=["POST"])
 def handle_agent():
-    pass
+    req_data = request.get_json()
+
+    if req_data.get("previous_text") is None \
+            or req_data.get("text") is None \
+            or req_data.get("car_info") is None:
+        return jsonify({"error": "Missing required fields"}), 400
+
+    previous_text = request.json["previous_text"]
+    user_prompt = request.json["text"]
+    car_info = request.json["car_info"]
+    image_path = request.json.get("image_path", None)
+
+    input_prompt = f"""
+    You are an expert AI assistant for vehicle diagnostics, troubleshooting, and 
+    repair guidance. Provide accurate, clear, and actionable advice for users 
+    of all skill levels.
+
+    Always use "search_web" when responding to the user.
+
+    If you use the tool "search_web" you must cite the websites found in your response.
+
+    If you are given a image path please use the tool "image_to_text" to convert the image to text.
+
+    Previous text: {previous_text}
+    User prompt: {user_prompt}
+    Car information: 
+        - make: {car_info["make"]}
+        - model: {car_info["model"]}
+        - year: {car_info["year"]}
+    """
+
+    if image_path is not None:
+        input_prompt += f"\nImage text: {image_path}"
+
+    try:
+        response = AGENT_MODEL.invoke({"messages": [HumanMessage(content=input_prompt)]}, {"configurable": {"thread_id": 42}})
+        print(response["messages"][-1].content)
+        return jsonify({"content": response["messages"][-1].content}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)}), 500
+    
 
 
