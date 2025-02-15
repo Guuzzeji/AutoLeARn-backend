@@ -47,7 +47,7 @@ PAYLOAD_TEMPLATE = {
     "messages": [
         {
             "role": "system",
-            "content": 
+            "content":
             """
             You are an expert AI assistant for vehicle diagnostics, troubleshooting, and repair guidance. 
             Provide accurate, clear, and actionable advice for users of all skill levels.
@@ -93,6 +93,7 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
+
 def model_perplexity(nl: str) -> dict[str] or None:
     """
     model perplexity
@@ -104,14 +105,14 @@ def model_perplexity(nl: str) -> dict[str] or None:
         user_prompt["content"] = nl
         payload["messages"].append(user_prompt)
 
-        response = requests.request("POST", BASE_URL, json=payload, headers=HEADERS)
+        response = requests.request(
+            "POST", BASE_URL, json=payload, headers=HEADERS)
         return response.json()
 
     except Exception as e:
         print(e)
         return None
 
+
 if __name__ == "__main__":
     print(model_perplexity("How do I change the oil in a 2014 Ford Explorer?"))
-
-

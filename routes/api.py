@@ -22,7 +22,7 @@ def handle_ping():
 @API_PATH.route("/transcribe", methods=["POST"])
 def handle_transcribe():
     if "audio" not in request.files:
-            return jsonify({"error": "No audio file provided"}), 400
+        return jsonify({"error": "No audio file provided"}), 400
 
     audio_file = request.files["audio"]
     file_path = os.path.join(FILE_DUMP, audio_file.filename)
@@ -32,7 +32,7 @@ def handle_transcribe():
 
     if response == None:
         return jsonify({"error": "Failed to transcribe audio"}), 500
-    
+
     return jsonify(response), 200
 
 
@@ -58,6 +58,7 @@ def handle_window_screenshot():
 
     return jsonify(screenshot_data), 200
 
+
 """
 Request: 
 {
@@ -65,6 +66,7 @@ Request:
     "type": "CarInfo" (Required)
 }
 """
+
 
 @API_PATH.route("/lang_to_struct", methods=["POST"])
 def handle_lang_to_struct():
@@ -86,6 +88,7 @@ def handle_lang_to_struct():
 
     return jsonify(struct), 200
 
+
 """
 {
     "previous_text": "Previous text", (Required)
@@ -94,6 +97,7 @@ def handle_lang_to_struct():
     "car_info": "CarInfo (Copy struct look in model)", (Rquired)
 }
 """
+
 
 @API_PATH.route("/agent", methods=["POST"])
 def handle_agent():
@@ -132,7 +136,8 @@ def handle_agent():
         input_prompt += f"\nImage text: {image_path}"
 
     try:
-        response = AGENT_MODEL.invoke({"messages": [HumanMessage(content=input_prompt)]}, {"configurable": {"thread_id": 42}})
+        response = AGENT_MODEL.invoke({"messages": [HumanMessage(content=input_prompt)]}, {
+                                      "configurable": {"thread_id": 42}})
         ai_msg = response["messages"][-1].content
 
         print(ai_msg)
@@ -146,6 +151,3 @@ def handle_agent():
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 500
-    
-
-

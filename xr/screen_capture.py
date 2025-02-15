@@ -7,6 +7,7 @@ import numpy as np
 
 # NOTE (Gabe): This ONLY works for windows os
 
+
 def get_windows():
     try:
         # Get all windows and their titles
@@ -19,12 +20,13 @@ def get_windows():
                     'visible': win.visible,
                     'minimized': win.isMinimized
                 })
-        
+
         return windows
 
     except Exception as e:
         print(f"Error listing windows: {str(e)}")
         return None
+
 
 def window_screenshot(window_title="", save_folder=""):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -47,10 +49,10 @@ def window_screenshot(window_title="", save_folder=""):
     if not windows:
         print(f"No windows found with title: {window_title}")
         return None
-            
+
     window = windows[0]
     print(f"Found window: {window.title}")
-            
+
     # Try to activate window, if fails use minimize/maximize/restore workaround
     try:
         window.activate()
@@ -89,4 +91,3 @@ def window_screenshot(window_title="", save_folder=""):
         'window_title': window_title if window_title else 'full_screen',
         'size': {'width': screenshot.size[0], 'height': screenshot.size[1]}
     }
-    

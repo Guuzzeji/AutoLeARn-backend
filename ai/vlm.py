@@ -1,9 +1,9 @@
+import os
+import base64
+from groq import Groq
 from dotenv import load_dotenv
 load_dotenv()
 
-from groq import Groq
-import base64
-import os
 
 client = Groq()
 
@@ -30,28 +30,31 @@ USER_PROMPT_TEMPLATE = {
         },
         {
             "type": "text",
-            "text": "USER ADDITIONAL CONTEXT: " # user context
+            "text": "USER ADDITIONAL CONTEXT: "  # user context
         },
         {
-        "type": "image_url",
-        # NOTE: image has to be correct / same type, GROQ get assy when not using correct image data
-        "image_url":
+            "type": "image_url",
+            # NOTE: image has to be correct / same type, GROQ get assy when not using correct image data
+            "image_url":
             {
-                "url": "data:image/jpeg;base64,", # base64 encoded image
+                "url": "data:image/jpeg;base64,",  # base64 encoded image
             },
         },
     ],
 }
 
+
 def image_to_base64(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
+
 
 def vlm(image_path: str, nl: str) -> dict[str] or None:
     try:
         user_prompt = USER_PROMPT_TEMPLATE.copy()
         user_prompt["content"][1]["text"] += nl
-        user_prompt["content"][2]["image_url"]["url"] += image_to_base64(image_path)
+        user_prompt["content"][2]["image_url"]["url"] += image_to_base64(
+            image_path)
 
         chat_completion = client.chat.completions.create(
             model="llama-3.2-90b-vision-preview",
@@ -69,6 +72,4 @@ def vlm(image_path: str, nl: str) -> dict[str] or None:
 
 if __name__ == "__main__":
     print(vlm("../testing/car_under.jpg",
-        "This is under side of my car where is the gas tank?"))
-
-
+              "This is under side of my car where is the gas tank?"))
