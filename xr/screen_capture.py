@@ -7,26 +7,9 @@ import numpy as np
 
 # NOTE (Gabe): This ONLY works for windows os
 
-
-def get_windows():
-    try:
-        # Get all windows and their titles
-        windows = []
-        for win in gw.getAllWindows():
-            if win.title:  # Only include windows with non-empty titles
-                windows.append({
-                    'title': win.title,
-                    'active': win.isActive,
-                    'visible': win.visible,
-                    'minimized': win.isMinimized
-                })
-
-        return windows
-
-    except Exception as e:
-        print(f"Error listing windows: {str(e)}")
-        return None
-
+IMAGE_FILE_PATH_TABLE = {
+    # FILE_NAME: FILE PATH
+}
 
 def window_screenshot(window_title="", save_folder=""):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -37,12 +20,10 @@ def window_screenshot(window_title="", save_folder=""):
         # Take screenshot of the full screen
         screenshot = pyautogui.screenshot()
         screenshot.save(file_path)
+
+        IMAGE_FILE_PATH_TABLE[filename] = file_path
         return {
             'filename': filename,
-            'filepath': file_path,
-            'timestamp': timestamp,
-            'window_title': window_title if window_title else 'full_screen',
-            'size': {'width': screenshot.size[0], 'height': screenshot.size[1]}
         }
 
     windows = gw.getWindowsWithTitle(window_title)
@@ -77,6 +58,7 @@ def window_screenshot(window_title="", save_folder=""):
             window.height
         ))
         print(f"Screenshot captured: {screenshot.size}")
+        screenshot.save(file_path)
     except Exception as capture_error:
         print(f"Error capturing window: {capture_error}")
         print("Falling back to full screen capture")
@@ -84,10 +66,7 @@ def window_screenshot(window_title="", save_folder=""):
         # Save the screenshot
         screenshot.save(file_path)
 
+    IMAGE_FILE_PATH_TABLE[filename] = file_path
     return {
         'filename': filename,
-        'filepath': file_path,
-        'timestamp': timestamp,
-        'window_title': window_title if window_title else 'full_screen',
-        'size': {'width': screenshot.size[0], 'height': screenshot.size[1]}
     }

@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from langchain_core.messages import HumanMessage
 
 from ai.whisper import whisper
-from xr.screen_capture import get_windows, window_screenshot
+from xr.screen_capture import window_screenshot, IMAGE_FILE_PATH_TABLE
 from ai.nl_to_struct import STRUCTS_CONVERTER
 from ai.agent import AGENT_MODEL
 
@@ -36,16 +36,6 @@ def handle_transcribe():
     return jsonify(response), 200
 
 
-@API_PATH.route("/windows", methods=["GET"])
-def handle_windows():
-    windows = get_windows()
-
-    if windows == None:
-        return jsonify({"error": "Failed to get windows"}), 500
-
-    return jsonify({windows: windows}), 200
-
-
 @API_PATH.route("/window_screenshot", methods=["POST"])
 def handle_window_screenshot():
     req_data = request.get_json()
@@ -65,8 +55,6 @@ Request:
     "type": "CarInfo" (Required)
 }
 """
-
-
 @API_PATH.route("/lang_to_struct", methods=["POST"])
 def handle_lang_to_struct():
     req_data = request.get_json()
@@ -90,14 +78,10 @@ def handle_lang_to_struct():
 
 """
 {
-    "previous_text": "Previous text", (Required)
-    "text": "User text", (Required)
-    "image_path": "Path to image", (Optional)
+    "image_file_name": "file name", (Required)
     "car_info": "CarInfo (Copy struct look in model)", (Rquired)
 }
 """
-
-
 @API_PATH.route("/agent", methods=["POST"])
 def handle_agent():
     req_data = request.get_json()
@@ -107,8 +91,6 @@ def handle_agent():
             or req_data.get("car_info") is None:
         return jsonify({"error": "Missing required fields"}), 400
 
-    previous_text = request.json["previous_text"]
-    user_prompt = request.json["text"]
     car_info = request.json["car_info"]
     image_path = request.json.get("image_path", None)
 
@@ -123,8 +105,7 @@ def handle_agent():
 
     If you are given a image path please use the tool "image_to_text" to convert the image to text.
 
-    Previous text: {previous_text}
-    User prompt: {user_prompt}
+    User Car Issue Prompt: {car_info["issue_with_car"]}
     Car information: 
         - make: {car_info["make"]}
         - model: {car_info["model"]}
@@ -132,7 +113,7 @@ def handle_agent():
     """
 
     if image_path is not None:
-        input_prompt += f"\nImage text: {image_path}"
+        input_prompt += f"\nImage text: {IMAGE_FILE_PATH_TABLE[image_path]}"
 
     try:
         response = AGENT_MODEL.invoke({"messages": [HumanMessage(content=input_prompt)]}, {
