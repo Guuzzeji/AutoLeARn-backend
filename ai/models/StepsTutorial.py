@@ -13,7 +13,7 @@ StepsTutorial = {
             },
         "steps": {
             "type": "array",
-            "description": "Detailed step-by-step breakdown of the process. Each step should be clear and concise.",
+            "description": "Detailed step-by-step breakdown of the process. Each step should be clear and detailed.",
             "items": {
                 "type": "object",
                 "description": "Detailed description of each step",
@@ -24,7 +24,7 @@ StepsTutorial = {
                     },
                     "step_description": {
                         "type": "string",
-                        "description": "Step description, for example: Remove the red wire from the car battery."
+                        "description": " Hightly detailed explanation of the particular step. Assume this is for a beginner."
                     },
                     "is_current_step": {"type": "boolean", "description": "Is this the current step the user is on."},
                 },
