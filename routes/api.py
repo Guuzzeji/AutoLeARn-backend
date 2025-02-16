@@ -47,7 +47,12 @@ def handle_transcribe():
 
 @API_PATH.route("/window_screenshot", methods=["POST"])
 def handle_window_screenshot():
-    # req_data = request.get_json()
+    req_data = request.get_json()
+
+    if req_data.get("debug"):
+        screenshot_data = window_screenshot("", FILE_DUMP)
+        return jsonify(screenshot_data), 200 
+
     screenshot_data = window_screenshot("Oculus - Google Chrome", FILE_DUMP)
     if screenshot_data == None:
         return jsonify({"success": False, "error": "Failed to take screenshot"}), 500

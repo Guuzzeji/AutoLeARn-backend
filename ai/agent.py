@@ -5,6 +5,7 @@ from langchain_core.messages import HumanMessage
 from langchain_groq import ChatGroq
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
+import os
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -12,7 +13,7 @@ from google import genai
 from google.genai import types
 import PIL.Image
 
-gemini_model = genai.Client(api_key="GEMINI_API_KEY")
+gemini_model = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
 
 # groq_llm = ChatGroq(
@@ -54,7 +55,9 @@ def image_to_text(image_local_file_path: str, additional_context_for_image: str)
                     f"USER ADDITIONAL CONTEXT: {additional_context_for_image}",
                     image
                     ])
-            return response.txt
+            
+            print("Gemini response", response)
+            return response.text
         except Exception as e:
             print(e)
             return "Error could not understand image"
