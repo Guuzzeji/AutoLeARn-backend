@@ -14,6 +14,7 @@ https://github.com/zaid-ahmed1/AutoLeARn
 ```txt
 GROQ_API_KEY="your-groq-api-key"
 PERPLEXITY_API_KEY="your-perplexity-api-key"
+GEMINI_API_KEY="your-gemini-api-key"
 PORT=5000
 HOST=127.0.0.1
 ```

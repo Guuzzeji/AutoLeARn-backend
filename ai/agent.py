@@ -8,6 +8,12 @@ from langgraph.prebuilt import create_react_agent
 from dotenv import load_dotenv
 load_dotenv()
 
+from google import genai
+from google.genai import types
+import PIL.Image
+
+gemini_model = genai.Client(api_key="GEMINI_API_KEY")
+
 
 # groq_llm = ChatGroq(
 #     # NOTE (Gabe): So of the models fuck with the agent system
@@ -27,8 +33,31 @@ def image_to_text(image_local_file_path: str, additional_context_for_image: str)
     vlm_response = vlm(image_local_file_path, additional_context_for_image)   
 
     if vlm_response is None:
-        print("VLM response", "FAILED TO GENERATE IMAGE TEXT")
-        return "Error could not understand image"
+        print("VLM response", "FAILED TO GENERATE IMAGE TEXT", "TRY GEMINI")
+        try:        
+            # When Groq FUCKS UP
+            image = PIL.Image.open(image_local_file_path)
+            response = gemini_model.models.generate_content(
+                model="gemini-2.0-flash",
+                contents=[
+                    """
+                    You are an AI automotive repair assistant with visual recognition capabilities. 
+                    Your role is to analyze user-submitted images and provide clear, objective descriptions 
+                    to assist in vehicle diagnostics and repair. All images given to you is the user's car.
+
+                    Your goal is to describe the user's vehicle's condition, identify potential issues within 
+                    the image, focus on key details.
+
+                    Use the user additional context to provide context about the user's vehicle. 
+                    If it align with the image given to you.
+                    """,
+                    f"USER ADDITIONAL CONTEXT: {additional_context_for_image}",
+                    image
+                    ])
+            return response.txt
+        except Exception as e:
+            print(e)
+            return "Error could not understand image"
 
     print("VLM response", vlm_response)
     return vlm_response.choices[0].message.content
