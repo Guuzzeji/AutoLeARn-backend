@@ -128,7 +128,8 @@ def handle_agent():
         sources = [weblink for weblink in steps_tutorial.get("sources", []) if "youtube.com" in weblink]
 
         if len(sources) > 0:
-            sources = sources[0]
+            ytdown.download_full_video_with_captions(sources[0], FILE_DUMP)
+            sources = os.path.abspath(f"{FILE_DUMP}/video.mp4")
         else:
             sources = ""
 
@@ -137,18 +138,18 @@ def handle_agent():
         print(e)
         return jsonify({"success": False, "error": str(e)}), 500
 
-@API_PATH.route("/yt_dl", methods=["POST"])
-def handle_yt_dl():
-    req_data = request.get_json()
+# @API_PATH.route("/yt_dl", methods=["POST"])
+# def handle_yt_dl():
+#     req_data = request.get_json()
 
-    if req_data.get("url") is None:
-        return jsonify({"success": False, "error": "Missing required fields"}), 400
+#     if req_data.get("url") is None:
+#         return jsonify({"success": False, "error": "Missing required fields"}), 400
     
-    # download video
-    url = req_data.get("url")
-    ytdown.download_full_video_with_captions(url, FILE_DUMP)
+#     # download video
+#     url = req_data.get("url")
+#     ytdown.download_full_video_with_captions(url, FILE_DUMP)
 
-    return jsonify({"success": True, "video_path": os.path.abspath(f"{FILE_DUMP}/video.mp4")}), 200
+#     return jsonify({"success": True, "video_path": os.path.abspath(f"{FILE_DUMP}/video.mp4")}), 200
 
 @API_PATH.route("/segment_cleanup", methods=["POST"])
 def handle_segment_cleanup():
