@@ -16,7 +16,7 @@ groq_llm = ChatGroq(
 )
 
 
-@tool
+# @tool
 def image_to_text(image_local_file_path: str, additional_context_for_image: str) -> str:
     """
     Call to convert a image to descriptive text that explains what the image is.
@@ -46,7 +46,7 @@ def search_web(prompt: str) -> str:
     resources: {response["citations"]}
     """
 
-tools = [image_to_text, search_web]
+tools = [search_web]
 
 # Initialize memory to persist state between graph runs
 checkpointer = MemorySaver()

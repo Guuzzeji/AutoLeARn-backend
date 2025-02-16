@@ -5,7 +5,7 @@ from langchain_core.messages import HumanMessage
 from ai.whisper import whisper
 from xr.screen_capture import window_screenshot, IMAGE_FILE_PATH_TABLE
 from ai.nl_to_struct import STRUCTS_CONVERTER
-from ai.agent import AGENT_MODEL
+from ai.agent import AGENT_MODEL, image_to_text
 
 
 API_PATH = Blueprint("api", __name__, url_prefix="/api")
@@ -98,12 +98,16 @@ def handle_agent():
 
     # Your Responsibilities
     Always use "search_web" when responding to the user.
+    
     If you use the tool "search_web" you must cite the websites found in your response.
+    
     If you are given a image path please use the tool "image_to_text" to convert the image to text.
 
     # User Car Information & Context of Problem
     User Car Issue Prompt: {car_info["issue_with_car"]}
-    Image of car local file path: {IMAGE_FILE_PATH_TABLE[image_file_name]}
+    
+    User provided Image as Text Description: {image_to_text(IMAGE_FILE_PATH_TABLE[image_file_name], car_info["issue_with_car"])}
+    
     Car Background Information: 
         - make: {car_info["make"]}
         - model: {car_info["model"]}
