@@ -16,13 +16,13 @@ os.makedirs(FILE_DUMP, exist_ok=True)
 
 @API_PATH.route("/ping", methods=["GET"])
 def handle_ping():
-    return jsonify({"message": "pong"}), 200
+    return jsonify({"success": False, "message": "pong"}), 200
 
 
 @API_PATH.route("/transcribe", methods=["POST"])
 def handle_transcribe():
     if "audio" not in request.files:
-        return jsonify({"error": "No audio file provided"}), 400
+        return jsonify({"success": False, "error": "No audio file provided"}), 400
 
     audio_file = request.files["audio"]
     file_path = os.path.join(FILE_DUMP, audio_file.filename)
@@ -31,8 +31,9 @@ def handle_transcribe():
     response = whisper(file_path)
 
     if response == None:
-        return jsonify({"error": "Failed to transcribe audio"}), 500
+        return jsonify({"success": False, "error": "Failed to transcribe audio"}), 500
 
+    response["success"] = True
     return jsonify(response), 200
 
 
@@ -41,8 +42,9 @@ def handle_window_screenshot():
     # req_data = request.get_json()
     screenshot_data = window_screenshot("Oculus - Google Chrome", FILE_DUMP)
     if screenshot_data == None:
-        return jsonify({"error": "Failed to take screenshot"}), 500
-
+        return jsonify({"success": False, "error": "Failed to take screenshot"}), 500
+    
+    screenshot_data["success"] = True
     return jsonify(screenshot_data), 200
 
 
@@ -58,19 +60,20 @@ def handle_lang_to_struct():
     req_data = request.get_json()
 
     if req_data.get("text") is None or req_data.get("type") is None:
-        return jsonify({"error": "Missing required fields"}), 400
+        return jsonify({"success": False, "error": "Missing required fields"}), 400
 
     text = req_data.get("text")
     struct_type = req_data.get("type")
 
     struct_converter = STRUCTS_CONVERTER.get(struct_type)
     if struct_converter is None:
-        return jsonify({"error": "Invalid struct type"}), 400
+        return jsonify({"success": False, "error": "Invalid struct type"}), 400
 
     struct = struct_converter(text)
     if struct == None:
-        return jsonify({"error": "Failed to convert text to struct"}), 500
+        return jsonify({"success": False, "error": "Failed to convert text to struct"}), 500
 
+    struct["success"] = True
     return jsonify(struct), 200
 
 
@@ -84,8 +87,9 @@ def handle_lang_to_struct():
 def handle_agent():
     req_data = request.get_json()
 
-    if req_data.get("image_file_name") is None or req_data.get("car_info") is None:
-        return jsonify({"error": "Missing required fields"}), 400
+    if req_data.get("image_file_name") is None or req_data.get("car_info") is None or \
+        req_data.get("image_file_name") == "":
+        return jsonify({"success": False, "error": "Missing required fields"}), 400
 
     car_info = request.json["car_info"]
     image_file_name = request.json.get("image_file_name")
@@ -124,9 +128,9 @@ def handle_agent():
         struct_converter = STRUCTS_CONVERTER.get("StepsTutorial")
         steps_tutorial = struct_converter(ai_msg)
         if steps_tutorial == None:
-            return jsonify({"error": "Failed to convert text to struct"}), 500
+            return jsonify({"success": False, "error": "Failed to convert text to struct"}), 500
 
-        return jsonify({"step_breakdown": steps_tutorial, "original_text": ai_msg}), 200
+        return jsonify({"success": True, "step_breakdown": steps_tutorial, "original_text": ai_msg}), 200
     except Exception as e:
         print(e)
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"success": False, "error": str(e)}), 500
