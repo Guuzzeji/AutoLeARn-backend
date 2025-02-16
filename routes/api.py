@@ -90,28 +90,27 @@ def handle_agent():
         return jsonify({"error": "Missing required fields"}), 400
 
     car_info = request.json["car_info"]
-    image_path = request.json.get("image_path", None)
+    image_file_name = request.json.get("image_file_name")
 
     input_prompt = f"""
+    # Your Role
     You are an expert AI assistant for vehicle diagnostics, troubleshooting, and 
     repair guidance. Provide accurate, clear, and actionable advice for users 
     of all skill levels.
 
+    # Your Responsibilities
     Always use "search_web" when responding to the user.
-
     If you use the tool "search_web" you must cite the websites found in your response.
-
     If you are given a image path please use the tool "image_to_text" to convert the image to text.
 
+    # User Car Information & Context of Problem
     User Car Issue Prompt: {car_info["issue_with_car"]}
-    Car information: 
+    Image of car local file path: {IMAGE_FILE_PATH_TABLE[image_file_name]}
+    Car Background Information: 
         - make: {car_info["make"]}
         - model: {car_info["model"]}
         - year: {car_info["year"]}
     """
-
-    if image_path is not None:
-        input_prompt += f"\nImage text: {IMAGE_FILE_PATH_TABLE[image_path]}"
 
     try:
         response = AGENT_MODEL.invoke({"messages": [HumanMessage(content=input_prompt)]}, {
