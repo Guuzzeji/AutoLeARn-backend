@@ -124,8 +124,15 @@ def handle_agent():
 
         if steps_tutorial == None:
             return jsonify({"success": False, "error": "Failed to convert text to struct"}), 500
+        
+        sources = [weblink for weblink in steps_tutorial.get("sources", []) if "youtube.com" in weblink]
 
-        return jsonify({"success": True, "step_breakdown": steps_tutorial, "original_text": response}), 200
+        if len(sources) > 0:
+            sources = sources[0]
+        else:
+            sources = ""
+
+        return jsonify({"success": True, "step_breakdown": steps_tutorial, "original_text": response, "youtube_link": sources}), 200
     except Exception as e:
         print(e)
         return jsonify({"success": False, "error": str(e)}), 500
