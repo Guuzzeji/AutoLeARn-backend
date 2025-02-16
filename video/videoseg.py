@@ -2,9 +2,10 @@ import json
 import os
 import ffmpeg
 
-json_path = "processed_response.json"
-video_path = "video.mp4"
-output_dir = "video_steps"
+FILE_DUMP  = "TEMP_SAVE_FOLDER"
+json_path  = f"{FILE_DUMP}/processed_response.json"
+video_path = f"{FILE_DUMP}/video.mp4"
+output_dir = f"{FILE_DUMP}/video_steps"
 os.makedirs(output_dir, exist_ok=True)
 
 def time_to_seconds(timestamp):

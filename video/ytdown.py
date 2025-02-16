@@ -1,4 +1,11 @@
 import yt_dlp
+import os
+
+def main():
+    FILE_DUMP = "TEMP_SAVE_FOLDER"
+    os.makedirs(FILE_DUMP, exist_ok=True)
+    url = "https://youtu.be/O1hF25Cowv8?si=yxgLScGErbM_nUfr"
+    download_full_video_with_captions(url, FILE_DUMP)
 
 def download_full_video_with_captions(url, output_path='.'):
     ydl_opts = {
@@ -27,5 +34,4 @@ def download_full_video_with_captions(url, output_path='.'):
     print("Download completed!")
 
 if __name__ == '__main__':
-    url = "https://youtu.be/O1hF25Cowv8?si=yxgLScGErbM_nUfr"
-    download_full_video_with_captions(url)
+    main()
