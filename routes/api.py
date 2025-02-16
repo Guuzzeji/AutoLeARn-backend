@@ -79,7 +79,7 @@ def handle_lang_to_struct():
 
 """
 {
-    "image_file_name": "file name", (Required)
+    "filename": "file name", (Required)
     "car_info": "CarInfo (Copy struct look in model)", (Rquired)
 }
 """
@@ -87,16 +87,16 @@ def handle_lang_to_struct():
 def handle_agent():
     req_data = request.get_json()
 
-    if req_data.get("image_file_name") is None or req_data.get("car_info") is None:
+    if req_data.get("filename") is None or req_data.get("car_info") is None:
         return jsonify({"success": False, "error": "Missing required fields"}), 400
 
     car_info = request.json["car_info"]
-    image_file_name = request.json.get("image_file_name")
+    filename = request.json.get("filename")
 
     input_prompt = f"""
     User Car Issue Prompt: {car_info["issue_with_car"]}
     
-    User provided Image as Text Description: {image_to_text(filename_table[image_file_name], car_info["issue_with_car"])}
+    User provided Image as Text Description: {image_to_text(filename_table[filename], car_info["issue_with_car"])}
     
     Car Background Information: 
         - make: {car_info["make"]}
