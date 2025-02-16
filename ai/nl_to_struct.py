@@ -10,7 +10,7 @@ load_dotenv()
 
 groq_llm = ChatGroq(
     model_name="llama-3.3-70b-versatile",
-    temperature=0.2
+    temperature=0.5
 )
 
 # NOTE (Gabe): if nl is "" it will default to

@@ -20,12 +20,11 @@ USER_PROMPT_TEMPLATE = {
             Your role is to analyze user-submitted images and provide clear, objective descriptions 
             to assist in vehicle diagnostics and repair. All images given to you is the user's car.
 
-            Your goal is to describe the user's vehicle's condition, identify potential issues within the image,
-            keep your response short and to the point, focus on key details.
+            Your goal is to describe the user's vehicle's condition, identify potential issues within 
+            the image, focus on key details.
 
-            Use the user additional context to provide context about the user's vehicle. If it align with the image given to you.
-
-            Write 1 to 4 sentences for your response.
+            Use the user additional context to provide context about the user's vehicle. 
+            If it align with the image given to you.
             """
         },
         {

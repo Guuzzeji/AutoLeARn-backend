@@ -25,7 +25,8 @@ StepsTutorial = {
                     "step_description": {
                         "type": "string",
                         "description": "Step description, for example: Remove the red wire from the car battery."
-                    }
+                    },
+                    "is_current_step": {"type": "boolean", "description": "Is this the current step the user is on."},
                 },
                 "required": ["step_number","step_description"]
             }

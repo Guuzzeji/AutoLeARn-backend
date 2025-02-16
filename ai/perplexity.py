@@ -63,13 +63,17 @@ PAYLOAD_TEMPLATE = {
             - Encourage safe practices and compliance with manufacturer guidelines.
             - If unsure, suggest consulting a certified mechanic.
 
-            Keep your response short and to the point.
+            Goal:
+            - Help users diagnose and fix common issues efficiently.
+            - Provide step-by-step instructions for repair.
+            - Identify what step the user is currently on and provide feedback and further instructions to help them complete the process.
+              - Otherwise, assume the user is at the beginning of the process.
 
             Maintain a helpful, professional, and adaptable tone—detailed for beginners, concise for experts.
             """
         },
     ],
-    "max_tokens": 3000,
+    # "max_tokens": 3000,
     "temperature": 0.2,
     # "top_p": 0.9,
     # "search_domain_filter": None,
