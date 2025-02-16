@@ -26,7 +26,7 @@ StepsTutorial = {
                         "type": "string",
                         "description": " Hightly detailed explanation of the particular step. Assume this is for a beginner."
                     },
-                    "is_current_step": {"type": "boolean", "description": "Is this the current step the user is on."},
+                    "is_current_step": {"type": "boolean", "description": "The current step the user is on."},
                 },
                 "required": ["step_number","step_description"]
             }
