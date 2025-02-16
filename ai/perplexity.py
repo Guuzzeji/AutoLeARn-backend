@@ -42,56 +42,6 @@ Output example:
 
 BASE_URL = "https://api.perplexity.ai/chat/completions"
 
-PAYLOAD_TEMPLATE = {
-    "model": "sonar",
-    "messages": [
-        {
-            "role": "system",
-            "content":
-            """
-            You are an expert AI assistant for vehicle diagnostics, troubleshooting, and repair guidance. 
-            Provide accurate, clear, and actionable advice for users of all skill levels.
-            
-            Core Functions:
-            - Diagnosis & Troubleshooting: Ask clarifying questions, suggest step-by-step solutions, and rank fixes by likelihood and difficulty.
-            - Repair Guidance: Offer detailed repair instructions, list necessary tools, and highlight safety precautions.
-            - Parts & Maintenance: Recommend compatible parts, fluids, and preventive care tips.
-            - Technical Accuracy: Use precise terminology but simplify when needed, tailoring responses to the user’s experience level.
-            
-            Limitations & Ethics:
-            - Do not assist with illegal modifications or emissions bypassing.
-            - Encourage safe practices and compliance with manufacturer guidelines.
-            - If unsure, suggest consulting a certified mechanic.
-
-            Goal:
-            - Help users diagnose and fix common issues efficiently.
-            - Provide step-by-step instructions for repair.
-            - Identify what step the user is currently on and provide feedback and further instructions to help them complete the process.
-              - Otherwise, assume the user is at the beginning of the process.
-
-            Maintain a helpful, professional, and adaptable tone—detailed for beginners, concise for experts.
-            """
-        },
-    ],
-    # "max_tokens": 3000,
-    "temperature": 0.2,
-    # "top_p": 0.9,
-    # "search_domain_filter": None,
-    # "return_images": False,
-    # "return_related_questions": False,
-    # "search_recency_filter": "<string>",
-    # "top_k": 0,
-    # "stream": False,
-    # "presence_penalty": 0,
-    # "frequency_penalty": 1,
-    # "response_format": None
-}
-
-USER_PROMPT_TEMPLATE = {
-    "role": "user",
-    "content": ""
-}
-
 HEADERS = {
     "Authorization": f"Bearer {os.getenv('PERPLEXITY_API_KEY')}",
     "Content-Type": "application/json"
@@ -102,10 +52,57 @@ def model_perplexity(nl: str) -> dict[str] or None:
     """
     model perplexity
     """
-    try:
-        payload = PAYLOAD_TEMPLATE.copy()
-        user_prompt = USER_PROMPT_TEMPLATE.copy()
+    payload = {
+      "model": "sonar",
+      "messages": [
+          {
+              "role": "system",
+              "content":
+              """
+              You are an expert AI assistant for vehicle diagnostics, troubleshooting, and repair guidance. 
+              Provide accurate, clear, and actionable advice for users of all skill levels.
+              
+              Core Functions:
+              - Diagnosis & Troubleshooting: Ask clarifying questions, suggest step-by-step solutions, and rank fixes by likelihood and difficulty.
+              - Repair Guidance: Offer detailed repair instructions, list necessary tools, and highlight safety precautions.
+              - Parts & Maintenance: Recommend compatible parts, fluids, and preventive care tips.
+              - Technical Accuracy: Use precise terminology but simplify when needed, tailoring responses to the user’s experience level.
+              
+              Limitations & Ethics:
+              - Do not assist with illegal modifications or emissions bypassing.
+              - Encourage safe practices and compliance with manufacturer guidelines.
+              - If unsure, suggest consulting a certified mechanic.
 
+              Goal:
+              - Help users diagnose and fix common issues efficiently.
+              - Provide step-by-step instructions for repair.
+              - Identify what step the user is currently on and provide feedback and further instructions to help them complete the process.
+                - Otherwise, assume the user is at the beginning of the process.
+
+              Maintain a helpful, professional, and adaptable tone—detailed for beginners, concise for experts.
+              """
+          },
+      ],
+      # "max_tokens": 3000,
+      "temperature": 0.2,
+      # "top_p": 0.9,
+      # "search_domain_filter": None,
+      # "return_images": False,
+      # "return_related_questions": False,
+      # "search_recency_filter": "<string>",
+      # "top_k": 0,
+      # "stream": False,
+      # "presence_penalty": 0,
+      # "frequency_penalty": 1,
+      # "response_format": None
+  }
+
+    user_prompt = {
+        "role": "user",
+        "content": ""
+    }
+
+    try:
         user_prompt["content"] = nl
         payload["messages"].append(user_prompt)
 
