@@ -19,13 +19,21 @@ groq_llm = ChatGroq(
 
 
 def nl_to_CarInfo(nl: str) -> dict[str]:
-    car_info_model = groq_llm.with_structured_output(CarInfo)
-    return car_info_model.invoke(nl)
+    try:
+        car_info_model = groq_llm.with_structured_output(CarInfo)
+        return car_info_model.invoke(nl)
+    except Exception as e:
+        print(e)
+        return None
 
 
 def nl_to_StepsTutorial(nl: str) -> dict[str]:
-    car_info_model = groq_llm.with_structured_output(StepsTutorial)
-    return car_info_model.invoke(nl)
+    try:
+        steps_tutorial_model = groq_llm.with_structured_output(StepsTutorial)
+        return steps_tutorial_model.invoke(nl)
+    except Exception as e:
+        print(e)
+        return None
 
 
 STRUCTS_CONVERTER = {
