@@ -23,11 +23,19 @@ def image_to_text(image_local_file_path: str, additional_context_for_image: str)
     """
     print("Called image to text from image path=", image_local_file_path,
           "context=", additional_context_for_image)
-    vlm_response = vlm(image_local_file_path, additional_context_for_image)
-    print("VLM response", vlm_response.choices[0].message.content)
+    
+    vlm_response = vlm(image_local_file_path, additional_context_for_image)    
     if vlm_response is None:
+        print("None")
         return "Error could not understand image"
-    return vlm_response.choices[0].message.content
+
+    try:
+        print("VLM response", vlm_response.choices[0].message.content)
+        return vlm_response.choices[0].message.content
+    except Exception as e:
+        print("VLM response", vlm_response["choices"][0]["message"]["content"])
+        print("VLM ERROR", e)
+        return vlm_response["choices"][0]["message"]["content"]
 
 
 @tool
