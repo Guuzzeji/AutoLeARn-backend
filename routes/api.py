@@ -118,6 +118,10 @@ def handle_agent():
     """
 
     try:
+        video_path = os.path.join(FILE_DUMP, "video.mp4")
+        if os.path.isfile(video_path):
+            os.remove(video_path)
+            
         response = search_web(input_prompt)
         struct_converter = STRUCTS_CONVERTER.get("StepsTutorial")
         steps_tutorial = struct_converter(response)
