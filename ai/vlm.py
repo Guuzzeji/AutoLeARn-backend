@@ -50,7 +50,7 @@ def image_to_base64(image_path):
 
 def vlm(image_path: str, nl: str) -> dict[str] or None:
     try:
-        user_prompt = dict(USER_PROMPT_TEMPLATE)
+        user_prompt = USER_PROMPT_TEMPLATE.deepcopy()
         user_prompt["content"][1]["text"] += nl
         user_prompt["content"][2]["image_url"]["url"] += image_to_base64(
             image_path)
