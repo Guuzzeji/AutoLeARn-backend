@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from langchain_core.messages import HumanMessage
 
 from ai.whisper import whisper
-from xr.screen_capture import window_screenshot, IMAGE_FILE_PATH_TABLE
+from xr.screen_capture import window_screenshot, filename_table
 from ai.nl_to_struct import STRUCTS_CONVERTER
 from ai.agent import search_web, image_to_text
 
@@ -96,7 +96,7 @@ def handle_agent():
     input_prompt = f"""
     User Car Issue Prompt: {car_info["issue_with_car"]}
     
-    User provided Image as Text Description: {image_to_text(IMAGE_FILE_PATH_TABLE[image_file_name], car_info["issue_with_car"])}
+    User provided Image as Text Description: {image_to_text(filename_table[image_file_name], car_info["issue_with_car"])}
     
     Car Background Information: 
         - make: {car_info["make"]}

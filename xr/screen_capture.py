@@ -7,7 +7,7 @@ import numpy as np
 
 # NOTE (Gabe): This ONLY works for windows os
 
-IMAGE_FILE_PATH_TABLE = {
+filename_table = {
     # FILE_NAME: FILE PATH
 }
 
@@ -21,7 +21,7 @@ def window_screenshot(window_title="", save_folder=""):
         screenshot = pyautogui.screenshot()
         screenshot.save(file_path)
 
-        IMAGE_FILE_PATH_TABLE[filename] = file_path
+        filename_table[filename] = file_path
         return {
             'filename': filename,
         }
@@ -66,7 +66,7 @@ def window_screenshot(window_title="", save_folder=""):
         # Save the screenshot
         screenshot.save(file_path)
 
-    IMAGE_FILE_PATH_TABLE[filename] = file_path
+    filename_table[filename] = file_path
     return {
         'filename': filename,
     }
