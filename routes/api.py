@@ -86,9 +86,7 @@ def handle_lang_to_struct():
 def handle_agent():
     req_data = request.get_json()
 
-    if req_data.get("previous_text") is None \
-            or req_data.get("text") is None \
-            or req_data.get("car_info") is None:
+    if req_data.get("image_file_name") is None or req_data.get("car_info") is None:
         return jsonify({"error": "Missing required fields"}), 400
 
     car_info = request.json["car_info"]
