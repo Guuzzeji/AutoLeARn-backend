@@ -9,11 +9,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-groq_llm = ChatGroq(
-    # NOTE (Gabe): So of the models fuck with the agent system
-    model_name="qwen-2.5-32b",
-    temperature=0
-)
+# groq_llm = ChatGroq(
+#     # NOTE (Gabe): So of the models fuck with the agent system
+#     model_name="qwen-2.5-32b",
+#     temperature=0
+# )
 
 
 # @tool
@@ -25,16 +25,16 @@ def image_to_text(image_local_file_path: str, additional_context_for_image: str)
           "context=", additional_context_for_image)
     
     vlm_response = vlm(image_local_file_path, additional_context_for_image)   
-    print("VLM response", vlm_response)
 
     if vlm_response is None:
-        print("None")
+        print("VLM response", "FAILED TO GENERATE IMAGE TEXT")
         return "Error could not understand image"
 
+    print("VLM response", vlm_response)
     return vlm_response.choices[0].message.content
 
 
-@tool
+# @tool
 def search_web(prompt: str) -> str:
     """
     Call to use AI to search the web and generate a summary of what it found.
@@ -50,18 +50,18 @@ def search_web(prompt: str) -> str:
     resources: {response["citations"]}
     """
 
-tools = [search_web]
+# tools = [search_web]
 
-# Initialize memory to persist state between graph runs
-checkpointer = MemorySaver()
-AGENT_MODEL = create_react_agent(groq_llm, tools, checkpointer=checkpointer)
+# # Initialize memory to persist state between graph runs
+# checkpointer = MemorySaver()
+# AGENT_MODEL = create_react_agent(groq_llm, tools, checkpointer=checkpointer)
 
-if __name__ == "__main__":
-    # Use the agent
-    config = {"configurable": {"thread_id": 42}}
-    for chunk in AGENT_MODEL.stream(
-        {"messages": [HumanMessage(
-            content="How do I change the oil in my 2014 Ford Explorer? Give me step by step instructions and sources")]}, config
-    ):
-        print(chunk)
-        print("----")
+# if __name__ == "__main__":
+#     # Use the agent
+#     config = {"configurable": {"thread_id": 42}}
+#     for chunk in AGENT_MODEL.stream(
+#         {"messages": [HumanMessage(
+#             content="How do I change the oil in my 2014 Ford Explorer? Give me step by step instructions and sources")]}, config
+#     ):
+#         print(chunk)
+#         print("----")
