@@ -74,6 +74,7 @@ def model_perplexity(nl: str) -> dict[str] or None:
               - If unsure, suggest consulting a certified mechanic.
 
               Your Response Should Include:
+              - ALWAYS INCLUDE A YOUTUBE VIDEO AS PART OF OUR SOURCES
               - Help users diagnose and fix common issues.
               - Provide step-by-step instructions for repair.
               - (MOST IMPORTANT) Identify what step the user (base off the user prompt) is currently on and provide feedback and further instructions to help them complete the process.
