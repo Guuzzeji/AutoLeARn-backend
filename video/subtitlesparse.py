@@ -34,15 +34,12 @@ def load_json_files():
         with open(f"{FILE_DUMP}/video.json", 'r') as f:
             video_data = json.load(f)
 
-        with open(f"{FILE_DUMP}/instructions.json", 'r') as f:
-            instructions_data = json.load(f)
-
-        return video_data, instructions_data
+        return video_data
     except FileNotFoundError as e:
         print(f"Error: Missing JSON file - {e}")
         return None, None
 
-def generate_payload(video_data, instructions_data):
+def generate_payload(video_data):
     """Generates the API payload for video segmentation."""
     return {
         "model": "sonar-pro",
@@ -81,7 +78,7 @@ def generate_payload(video_data, instructions_data):
             },
             {
                 "role": "user",
-                "content": f"Analyze these subtitles and instructions: {json.dumps(video_data)} {json.dumps(instructions_data)}"
+                "content": f"Analyze these subtitles and instructions: {json.dumps(video_data)}"
             }
         ],
         "response_format": {
@@ -113,21 +110,21 @@ def save_response(result):
         json.dump(result, file, indent=4)
     print(f"Response saved to {output_path}")
 
-def main():
-    """Main function that executes the script."""
-    ensure_directory_exists()
-    video_data, instructions_data = load_json_files()
+# def main():
+#     """Main function that executes the script."""
+#     ensure_directory_exists()
+#     video_data, instructions_data = load_json_files()
 
-    if video_data is None or instructions_data is None:
-        print("Error: JSON files could not be loaded.")
-        return
+#     if video_data is None or instructions_data is None:
+#         print("Error: JSON files could not be loaded.")
+#         return
 
-    payload = generate_payload(video_data, instructions_data)
-    result = send_request(payload)
+#     payload = generate_payload(video_data)
+#     result = send_request(payload)
 
-    if result:
-        save_response(result)
+#     if result:
+#         save_response(result)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
