@@ -40,11 +40,11 @@ def search_web(prompt: str) -> str:
     print("Search web response", response)
     if response is None:
         return "Error could not generate response"
-    return {
-        "text": response["choices"][0]["message"]["content"],
-        "websites_found": response["citations"]
-    }
-
+    return f"""
+    {response["choices"][0]["message"]["content"]}
+    
+    resources: {response["citations"]}
+    """
 
 tools = [image_to_text, search_web]
 
